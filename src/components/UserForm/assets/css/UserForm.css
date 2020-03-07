@@ -1,0 +1,40 @@
+body {
+    width: 100%;
+    height: 100%;
+}
+#userFormWrapper {
+    background-image: url('../img/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    height: 100vh;
+}
+#userFormContainer {
+    width: 100%;
+    height: 100%;
+}
+#userForm {
+    display: inline-block;
+    background-color: #333333;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 40vh;
+    width: 40%;
+}
+#userForm label {
+    color: white;
+    font-weight: 700;
+}
+
+#userIcon {
+    color: white;
+    font-size: 20pt;
+    margin: 15px;
+}
+
+@media only screen and (max-width: 600px) {
+    #userForm {
+        width: 70%;
+    }    
+}

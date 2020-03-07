@@ -1,0 +1,40 @@
+body {
+    /* background-image: url('../img/bg.jpg'); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    height: 100vh;
+}
+#navbar {
+    background-color: #333333
+}
+
+#defaultUserImg {
+    display: block;
+    margin: 0 auto;
+    width: 20%;
+    margin-top: 20px;
+}
+#welcome {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+#borda {
+    background-color: #333333;
+    height: 3px;
+    width: 50px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+#cardsCol {
+    margin-bottom: 20px;
+}
+#header {
+    width: 100%;
+}
+#cardImage {
+    cursor: pointer;
+}
