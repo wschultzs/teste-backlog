@@ -1,5 +1,5 @@
 import React from 'react'
 
-export default async function api() {
+export default function api() {
     
 }

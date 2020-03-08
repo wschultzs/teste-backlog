@@ -10,6 +10,11 @@ body {
     background-color: #333333
 }
 
+#header {
+    margin-top: 30px;
+    text-align: center;
+}
+
 #defaultUserImg {
     display: block;
     margin: 0 auto;
