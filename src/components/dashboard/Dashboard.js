@@ -8,8 +8,8 @@ import DefaultUserImg from './assets/img/defaultUser.jpg'
 export default function Dashboard(props) {
 
     const [data, setData] = useState([])
-    const [input, setInputDescription] = useState("")
-    let inputDescription = useRef();
+    const [userImg, setUserImg] = useState(DefaultUserImg)
+    let valor;
 
     useEffect(() => {
         const fetchData = () => {
@@ -22,19 +22,27 @@ export default function Dashboard(props) {
             })
         }
         fetchData()
+
+        if(localStorage.getItem('userImg')) {
+            setUserImg(localStorage.getItem('userImg'))
+        }
     }, [])
 
-    function handleClick(e, id, valor) {
+    function handleButtonClick(e, id, inputValue) {
         e.preventDefault();
 
         const newDescription = data.map(val => {
-            return val.id === id ? {...val, description: valor} : val
+            return val.id === id ? {...val, description: inputValue} : val
         })
 
         setData(newDescription)
     }
 
-    let valor = '';
+    function handleImgClick(img) {
+        setUserImg(img)
+
+        localStorage.setItem('userImg', img)
+    }
 
     return (
         <>
@@ -52,7 +60,7 @@ export default function Dashboard(props) {
             <Container>
                 <Row id="header">
                     <Col xs={12} md={6}>
-                        <Image src={DefaultUserImg} fluid />
+                        <Image roundedCircle id="defaultUserImg" src={userImg}  />
                     </Col>
                     <Col md={6}>
                         <h1>Bem-vindo, {props.match.params.user}</h1>
@@ -62,7 +70,7 @@ export default function Dashboard(props) {
                     {data.map(val => (
                         <Col key={val.id} xs={12} md={4} className="mt-3 mb-3">
                             <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={val.thumbnailUrl} />
+                                <Card.Img variant="top" src={val.thumbnailUrl} onClick={() => handleImgClick(val.thumbnailUrl)}/>
                                 <Card.Body>
                                     <Card.Title>{val.title}</Card.Title>
                                     {val.description &&
@@ -72,7 +80,7 @@ export default function Dashboard(props) {
                                         <Form.Group>
                                             <Form.Control type="text" onChange={e => { valor = e.target.value }} placeholder="Mudar descrição" />
                                         </Form.Group>
-                                        <Button onClick={e => handleClick(e, val.id, valor)}>Mudar</Button>
+                                        <Button onClick={e => handleButtonClick(e, val.id, valor)}>Mudar</Button>
                                     </Form>
                                 </Card.Body>
                             </Card>
