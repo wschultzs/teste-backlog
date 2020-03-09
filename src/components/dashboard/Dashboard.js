@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Container, Row, Col, Navbar, Image, Card, Form, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap'
 import './assets/css/style.css'
 import DefaultUserImg from './assets/img/defaultUser.jpg'
+
+import NavbarComponent from '../navbar/Navbar'
+import HeaderComponent from '../header/HeaderComponent'
 
 export default function Dashboard(props) {
 
@@ -12,19 +14,22 @@ export default function Dashboard(props) {
     let valor;
 
     useEffect(() => {
-        const fetchData = () => {
-            axios.get('https://jsonplaceholder.typicode.com/photos', {
-                params: {
-                    _limit: 10
-                }
-            }).then(response => {
-                setData(response.data)
-            })
-        }
-        fetchData()
-
-        if(localStorage.getItem('userImg')) {
-            setUserImg(localStorage.getItem('userImg'))
+        if (localStorage.getItem('userImg')) setUserImg(localStorage.getItem('userImg'))
+        
+        if (localStorage.getItem('newDescription')) {
+            setData(JSON.parse(localStorage.getItem('newDescription')))
+        } else {
+            const fetchData = () => {
+                axios.get('https://jsonplaceholder.typicode.com/photos', {
+                    params: {
+                        _limit: 10
+                    }
+                }).then(response => {
+                    setData(response.data)
+                })
+            }
+    
+            fetchData()
         }
     }, [])
 
@@ -32,10 +37,11 @@ export default function Dashboard(props) {
         e.preventDefault();
 
         const newDescription = data.map(val => {
-            return val.id === id ? {...val, description: inputValue} : val
+            return val.id === id ? { ...val, description: inputValue } : val
         })
 
         setData(newDescription)
+        localStorage.setItem('newDescription', JSON.stringify(newDescription))
     }
 
     function handleImgClick(img) {
@@ -46,31 +52,14 @@ export default function Dashboard(props) {
 
     return (
         <>
-            <Navbar id="navbar" variant="dark">
-                <Navbar.Brand>
-                    <img
-                        alt=""
-                        src='https://backlog.com.br/wp-content/uploads/2019/10/backlog-logo-white-500px.png'
-                        width="150"
-                        height="30"
-                        className="d-inline-block align-top"
-                    />
-                </Navbar.Brand>
-            </Navbar>
+            <NavbarComponent />
             <Container>
-                <Row id="header">
-                    <Col xs={12} md={6}>
-                        <Image roundedCircle id="defaultUserImg" src={userImg}  />
-                    </Col>
-                    <Col md={6}>
-                        <h1>Bem-vindo, {props.match.params.user}</h1>
-                    </Col>
-                </Row>
+                <HeaderComponent avatar={userImg} userName={props.match.params.user} />
                 <Row>
                     {data.map(val => (
                         <Col key={val.id} xs={12} md={4} className="mt-3 mb-3">
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={val.thumbnailUrl} onClick={() => handleImgClick(val.thumbnailUrl)}/>
+                            <Card style={{ width: '18rem', boxShadow: "1px 1px 1px #9E9E9E" }}>
+                                <Card.Img variant="top" src={val.thumbnailUrl} onClick={() => handleImgClick(val.thumbnailUrl)} />
                                 <Card.Body>
                                     <Card.Title>{val.title}</Card.Title>
                                     {val.description &&
@@ -89,5 +78,5 @@ export default function Dashboard(props) {
                 </Row>
             </Container>
         </>
-            )
+    )
 }
